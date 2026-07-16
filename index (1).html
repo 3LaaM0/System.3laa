@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>سيستم 🕵️‍♂️ - الإصدار الفاخر</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-galaxy: #030712;
+    --bg-card: rgba(17, 24, 39, 0.66);
+    --bg-card-hover: rgba(31, 41, 55, 0.8);
+
+    --color-easy: #10b981;
+    --color-medium: #0ea5e9;
+    --color-hard: #f43f5e;
+
+    --accent-blue: #3b82f6;
+    --accent-glow: rgba(59, 130, 246, 0.25);
+    --white: #ffffff;
+    --text-muted: #9ca3af;
+    --text-bright: #f3f4f6;
+
+    --radius-premium: 20px;
+    --radius-pill: 999px;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html, body {
+    min-height: 100%;
+    overscroll-behavior: none;
+    background-color: var(--bg-galaxy);
+  }
+
+  body {
+    font-family: 'Tajawal', sans-serif;
+    color: var(--text-bright);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background-image:
+      radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.10) 0%, transparent 40%),
+      radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.06) 0%, transparent 45%),
+      radial-gradient(circle at 50% 100%, rgba(109, 40, 217, 0.08) 0%, transparent 50%),
+      linear-gradient(135deg, #030712 0%, #0b1528 100%);
+  }
+
+  /* حاوية التطبيق - زجاج مصقول فاخر مع حلقة نيون متحركة */
+  .app {
+    width: 100%;
+    max-width: 450px;
+    height: min(780px, 88vh);
+    background: var(--bg-card);
+    backdrop-filter: blur(28px) saturate(160%);
+    -webkit-backdrop-filter: blur(28px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 32px;
+    box-shadow:
+      0 30px 70px -15px rgba(0, 0, 0, 0.85),
+      0 0 0 1px rgba(255, 255, 255, 0.05) inset,
+      0 1px 0 rgba(255, 255, 255, 0.10) inset;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease;
+    margin-bottom: 20px;
+  }
+  .app::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 32px;
+    padding: 1.5px;
+    background: linear-gradient(135deg, rgba(59,130,246,.65), rgba(16,185,129,.22), rgba(109,40,217,.4), rgba(59,130,246,.65));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    opacity: .5;
+    animation: appRingGlow 6s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes appRingGlow {
+    0%, 100% { opacity: .3; }
+    50% { opacity: .75; }
+  }
+
+  .screen {
+    position: relative;
+    display: none;
+    flex-direction: column;
+    flex: 1;
+    padding: 32px 24px 24px;
+    animation: slideUpFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .screen.active {
+    display: flex;
+  }
+
+  @keyframes slideUpFade {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  h1.title {
+    font-weight: 900;
+    font-size: 32px;
+    color: var(--white);
+    text-align: center;
+    letter-spacing: -0.5px;
+    margin-top: 10px;
+  }
+  h1.title span.accent {
+    background: linear-gradient(135deg, #3b82f6, #60a5fa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 18px rgba(59, 130, 246, 0.35));
+  }
+
+  .subtitle {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 14px;
+    margin-top: 10px;
+    line-height: 1.6;
+    padding: 0 10px;
+  }
+
+  .spacer { flex: 1; }
+
+  .progress-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .dot {
+    width: 18px;
+    height: 4px;
+    border-radius: var(--radius-pill);
+    background: rgba(255, 255, 255, 0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .dot.active {
+    background: var(--accent-blue);
+    width: 32px;
+    box-shadow: 0 0 12px var(--accent-glow), 0 0 4px rgba(59, 130, 246, .8);
+  }
+
+  .input-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+  }
+  .name-input {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1.5px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-premium);
+    padding: 16px 20px;
+    color: var(--white);
+    font-family: 'Tajawal', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    outline: none;
+    transition: all 0.25s ease;
+  }
+  .name-input::placeholder { color: rgba(255, 255, 255, 0.25); }
+  .name-input:focus {
+    border-color: var(--accent-blue);
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 0 4px var(--accent-glow);
+  }
+
+  .add-btn {
+    width: 56px;
+    height: 56px;
+    border: none;
+    border-radius: var(--radius-premium);
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    color: var(--white);
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    box-shadow: 0 8px 20px -6px rgba(59, 130, 246, 0.45);
+  }
+  .add-btn:hover { transform: translateY(-2px); }
+  .add-btn:active { transform: translateY(1px); }
+
+  .players-list {
+    margin-top: 24px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    max-height: 180px;
+    overflow-y: auto;
+    padding-right: 4px;
+  }
+  .player-pill {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--white);
+    padding: 10px 14px;
+    border-radius: var(--radius-pill);
+    font-weight: 600;
+    font-size: 14px;
+    animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes popIn {
+    0% { transform: scale(0.7); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  .pill-avatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--bg-galaxy);
+  }
+  .pill-remove {
+    background: rgba(244, 63, 94, 0.15);
+    color: var(--color-hard);
+    border: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+  }
+  .pill-remove:hover { background: rgba(244, 63, 94, 0.3); }
+
+  .btn {
+    border: none;
+    border-radius: var(--radius-premium);
+    padding: 18px 24px;
+    font-family: 'Tajawal', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    color: var(--white);
+    box-shadow:
+      0 14px 30px -8px rgba(59, 130, 246, .55),
+      0 0 0 1px rgba(255, 255, 255, .08) inset;
+  }
+  .btn-primary:hover {
+    box-shadow:
+      0 18px 40px -8px rgba(59, 130, 246, .65),
+      0 0 22px rgba(59, 130, 246, .35),
+      0 0 0 1px rgba(255, 255, 255, .12) inset;
+    transform: translateY(-2px);
+  }
+  .btn-primary:active { transform: translateY(1px); }
+  .btn-primary:disabled {
+    opacity: 0.35;
+    transform: none !important;
+    box-shadow: none !important;
+    cursor: not-allowed;
+  }
+  .btn-secondary {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    color: var(--text-bright);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .btn-secondary:hover { background: rgba(255, 255, 255, 0.09); border-color: rgba(255,255,255,.2); }
+
+  /* أزرار اختيار المستوى */
+  .level-select-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 14px;
+  }
+  .level-btn {
+    flex: 1;
+    width: auto;
+    padding: 16px 6px;
+    font-size: 14px;
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+    border: 1.5px solid transparent;
+  }
+  .level-btn-easy { background: rgba(16, 185, 129, .10); color: var(--color-easy); border-color: rgba(16, 185, 129, .35); }
+  .level-btn-easy:hover { background: rgba(16, 185, 129, .18); box-shadow: 0 0 22px rgba(16, 185, 129, .28); transform: translateY(-2px); }
+  .level-btn-medium { background: rgba(14, 165, 233, .10); color: var(--color-medium); border-color: rgba(14, 165, 233, .35); }
+  .level-btn-medium:hover { background: rgba(14, 165, 233, .18); box-shadow: 0 0 22px rgba(14, 165, 233, .28); transform: translateY(-2px); }
+  .level-btn-hard { background: rgba(244, 63, 94, .10); color: var(--color-hard); border-color: rgba(244, 63, 94, .35); }
+  .level-btn-hard:hover { background: rgba(244, 63, 94, .18); box-shadow: 0 0 22px rgba(244, 63, 94, .28); transform: translateY(-2px); }
+
+  .wheel-wrap {
+    position: relative;
+    width: min(80vw, 260px);
+    height: min(80vw, 260px);
+    margin: 32px auto 16px;
+  }
+  #wheelCanvas {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(59, 130, 246, 0.15);
+    border: 4px solid rgba(255, 255, 255, 0.06);
+  }
+  .wheel-pointer {
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0; height: 0;
+    border-left: 14px solid transparent;
+    border-right: 14px solid transparent;
+    border-top: 28px solid var(--accent-blue);
+    z-index: 10;
+    filter: drop-shadow(0 4px 10px rgba(59, 130, 246, 0.5));
+  }
+  .wheel-hub {
+    position: absolute;
+    width: 50px; height: 50px;
+    border-radius: 50%;
+    background: #111827;
+    border: 4px solid var(--accent-blue);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+  }
+
+  .welcome-banner {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(17, 24, 39, 0.8) 100%);
+    backdrop-filter: blur(12px);
+    border: 1.5px solid rgba(59, 130, 246, 0.25);
+    border-radius: var(--radius-premium);
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 20px;
+    animation: pulseBorder 3s infinite alternate;
+  }
+  @keyframes pulseBorder {
+    0% { border-color: rgba(59, 130, 246, 0.2); }
+    100% { border-color: rgba(59, 130, 246, 0.5); }
+  }
+  .welcome-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--white);
+  }
+  .welcome-title span {
+    color: var(--accent-blue);
+    text-shadow: 0 0 12px var(--accent-glow);
+  }
+
+  .secret-card {
+    background: rgba(17, 24, 39, 0.78);
+    backdrop-filter: blur(18px);
+    border: 2px solid rgba(255, 255, 255, 0.08);
+    border-radius: 28px;
+    padding: 30px 24px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.55);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    max-height: 250px;
+    overflow-y: auto;
+  }
+
+  .secret-card.easy-card { border-color: var(--color-easy); box-shadow: 0 0 40px rgba(16, 185, 129, 0.22), 0 25px 50px rgba(0,0,0,.55); }
+  .secret-card.medium-card { border-color: var(--color-medium); box-shadow: 0 0 40px rgba(14, 165, 233, 0.22), 0 25px 50px rgba(0,0,0,.55); }
+  .secret-card.hard-card { border-color: var(--color-hard); box-shadow: 0 0 40px rgba(244, 63, 94, 0.22), 0 25px 50px rgba(0,0,0,.55); }
+
+  .level-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: var(--radius-pill);
+    font-size: 13px;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    letter-spacing: 0.5px;
+  }
+  .badge-easy { background: rgba(16, 185, 129, 0.12); color: var(--color-easy); }
+  .badge-medium { background: rgba(14, 165, 233, 0.12); color: var(--color-medium); }
+  .badge-hard { background: rgba(244, 63, 94, 0.12); color: var(--color-hard); }
+
+  .quirk-label {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .quirk-text {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--white);
+    line-height: 1.6;
+  }
+
+  .top-utility {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 20;
+  }
+  .round-badge {
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--text-bright);
+    padding: 6px 14px;
+    border-radius: var(--radius-pill);
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .icon-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(8px);
+    color: var(--text-bright);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .icon-btn:active { transform: scale(0.9); }
+
+  .info-box {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius-premium);
+    padding: 20px;
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--text-muted);
+    text-align: center;
+  }
+  .info-box strong { color: var(--white); }
+
+  .status-pill {
+    background: rgba(16, 185, 129, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(16, 185, 129, 0.25);
+    border-radius: var(--radius-premium);
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .pulse-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--color-easy);
+    animation: pulseGlow 1.5s infinite;
+  }
+  @keyframes pulseGlow {
+    0% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5); }
+    70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+    100% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+  }
+
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
+
+  .developer-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-muted);
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .developer-footer strong {
+    color: var(--accent-blue);
+    font-weight: 800;
+    letter-spacing: 1px;
+  }
+  .social-icons { display: flex; gap: 16px; }
+  .social-icons a {
+    color: var(--text-muted);
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .social-icons a:hover { color: var(--white); transform: translateY(-3px) scale(1.1); }
+  .social-icons .icon { width: 24px; height: 24px; }
+  .social-icons .fb-icon:hover { color: #1877F2; }
+  .social-icons .wa-icon:hover { color: #25D366; }
+</style>
+</head>
+<body>
+
+<div class="app" id="app">
+  <div class="top-utility">
+    <span class="round-badge" id="roundChip" style="display:none;">الجولة 1</span>
+    <button class="icon-btn" id="soundToggleBtn" aria-label="كتم الصوت">🔊</button>
+  </div>
+
+  <!-- SCREEN 1: SETUP -->
+  <section class="screen active" id="screen-setup">
+    <div class="progress-dots">
+      <span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+    </div>
+
+    <h1 class="title">لعبة <span class="accent">السيستم 🕵️‍♂️</span></h1>
+    <p class="subtitle">لعبة ذكاء وضحك جماعية.. تحدد العجلة لاعبًا ليخرج، ويحاول البقية تطبيق "سيستم" غامض ومكشوف بدقة!</p>
+
+    <div class="input-row">
+      <input type="text" class="name-input" id="nameInput" placeholder="اكتب اسم اللاعب هنا..." maxlength="14">
+      <button class="add-btn" id="addBtn">+</button>
+    </div>
+
+    <div class="players-list" id="playersList"></div>
+
+    <div class="spacer"></div>
+    <button class="btn btn-primary" id="startBtn" disabled>ابدأ اللعبة الفاخرة 🚀</button>
+  </section>
+
+  <!-- SCREEN 2: WHEEL -->
+  <section class="screen" id="screen-wheel">
+    <div class="progress-dots">
+      <span class="dot"></span><span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+    </div>
+
+    <h1 class="title">عجلة <span class="accent">الاختيار 🌀</span></h1>
+    <p class="subtitle">لف العجلة لتحديد اللاعب الذي سيغادر الغرفة ويبدأ التحدي!</p>
+
+    <div class="wheel-wrap">
+      <div class="wheel-pointer"></div>
+      <canvas id="wheelCanvas" width="600" height="600"></canvas>
+      <div class="wheel-hub"></div>
+    </div>
+
+    <div class="spacer"></div>
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+      <button class="btn btn-primary" id="spinBtn">لف العجلة الآن 🎲</button>
+      <button class="btn btn-secondary" id="backToSetupBtn">تعديل قائمة اللاعبين ✏️</button>
+    </div>
+  </section>
+
+  <!-- SCREEN 3: TRANSITION + LEVEL PICK -->
+  <section class="screen" id="screen-transition">
+    <div class="progress-dots">
+      <span class="dot"></span><span class="dot"></span><span class="dot active"></span><span class="dot"></span><span class="dot"></span>
+    </div>
+
+    <h1 class="title">حان <span class="accent">الوقت 🚪</span></h1>
+    <br>
+
+    <div class="info-box" style="border-color: var(--color-hard); background: rgba(244,63,94,0.05);">
+      <p style="font-size: 18px; color: var(--white); font-weight: 700; margin-bottom: 8px;">يا <span id="guesserNameDisplay" style="color:var(--color-hard);">—</span></p>
+      غادر الغرفة فورًا الآن ولا تنظر إلى الشاشة! ⛔
+    </div>
+
+    <br>
+    <div class="info-box">
+      باقي اللاعبين.. تأكدوا من مغادرته، ثم اختاروا مستوى السيستم اللي عايزينه.
+    </div>
+
+    <div class="spacer"></div>
+    <p class="subtitle" style="margin-bottom:2px;">اختاروا المستوى:</p>
+    <div class="level-select-row">
+      <button class="btn level-btn level-btn-easy" id="revealEasyBtn">سهل 🟢</button>
+      <button class="btn level-btn level-btn-medium" id="revealMediumBtn">متوسط 🔵</button>
+      <button class="btn level-btn level-btn-hard" id="revealHardBtn">صعب 🔴</button>
+    </div>
+  </section>
+
+  <!-- SCREEN 4: REVEAL SECRET QUIRK -->
+  <section class="screen" id="screen-reveal">
+    <div class="progress-dots">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot active"></span><span class="dot"></span>
+    </div>
+
+    <div class="welcome-banner">
+      <div class="welcome-title">أهلاً بكم يا <span>أبطال السيستم! 🕵️‍♀️</span></div>
+      <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">تأكدوا تمامًا أن الجاسوس خارج الغرفة قبل قراءة السيستم!</p>
+    </div>
+
+    <div class="secret-card" id="secretCard">
+      <span class="level-badge" id="diffBadge">سهل</span>
+      <div class="quirk-label">سيستم الجولة السري:</div>
+      <div class="quirk-text" id="quirkText">—</div>
+    </div>
+
+    <p class="subtitle" style="margin-top: 15px;">احفظوا هذه الحركة وطبقوها جميعاً بذكاء أثناء إجاباتكم!</p>
+
+    <div class="spacer"></div>
+    <button class="btn btn-primary" id="startPlayBtn">جاهزون، فليدخل اللاعب! 🚪🔥</button>
+  </section>
+
+  <!-- SCREEN 5: ACTIVE PLAY -->
+  <section class="screen" id="screen-play">
+    <div class="progress-dots">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot active"></span>
+    </div>
+
+    <div class="status-pill">
+      <div class="pulse-dot"></div>
+      <div>
+        <div style="font-weight: 800; color: var(--white);">السيستم نشط الآن! 🔥</div>
+        <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">اللاعب <span id="guesserNamePlay" style="color:var(--accent-blue); font-weight:700;">—</span> يحاول كشفكم.</div>
+      </div>
+    </div>
+
+    <br>
+    <div style="display: flex; flex-direction: column; gap: 12px; overflow-y: auto;">
+      <div class="info-box" style="text-align: right; padding: 14px 20px;">
+        <strong>1. اطلبوا من اللاعب الدخول.</strong>
+      </div>
+      <div class="info-box" style="text-align: right; padding: 14px 20px;">
+        <strong>2. دعوه يطرح الأسئلة:</strong> وأجيبوا عليها بطبيعية تامة مع دمج السيستم السري بخفة وتناغم.
+      </div>
+      <div class="info-box" style="text-align: right; padding: 14px 20px;">
+        <strong>3. النهاية:</strong> إذا خمن السيستم أو استسلم، دوسوا زر إنهاء الجولة!
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+      <button class="btn btn-primary" id="newRoundBtn">إنهاء الجولة ✅</button>
+      <button class="btn btn-secondary" id="homeBtn">العودة للرئيسية 🏠</button>
+    </div>
+  </section>
+
+  <!-- SCREEN 6: ROUND END CONFIRM -->
+  <section class="screen" id="screen-roundend">
+    <div class="progress-dots">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot active"></span>
+    </div>
+
+    <div class="spacer"></div>
+    <div class="welcome-banner">
+      <div class="welcome-title">الجولة <span id="roundEndNumber">1</span> خلصت! 🎉</div>
+      <p style="font-size: 13px; color: var(--text-muted); margin-top: 6px;">جاهزين تبدأوا الجولة <span id="nextRoundNumber">2</span>؟</p>
+    </div>
+    <div class="spacer"></div>
+
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+      <button class="btn btn-primary" id="confirmNextRoundBtn">نعم، يلا 🔥</button>
+      <button class="btn btn-secondary" id="homeFromRoundEndBtn">العودة للرئيسية 🏠</button>
+    </div>
+  </section>
+
+  <!-- SCREEN 7: GAME OVER -->
+  <section class="screen" id="screen-gameover">
+    <div class="progress-dots">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot active"></span>
+    </div>
+
+    <div class="spacer"></div>
+    <div class="welcome-banner" style="border-color: rgba(16,185,129,.35);">
+      <div class="welcome-title">خلصت <span>اللعبة! 🏆</span></div>
+      <p style="font-size: 13px; color: var(--text-muted); margin-top: 6px;">لعبتوا 3 جولات ✨ تقدروا تبدأوا لعبة جديدة في أي وقت.</p>
+    </div>
+    <div class="spacer"></div>
+
+    <button class="btn btn-primary" id="restartGameBtn">لعبة جديدة 🔄</button>
+  </section>
+</div>
+
+<!-- Footer Section -->
+<div class="developer-footer">
+  <span>صُنع بواسطة <strong>3Laa</strong></span>
+  <div class="social-icons">
+    <!-- Facebook Icon -->
+    <a href="https://www.facebook.com/share/19Kojx7i21/" target="_blank" title="Facebook" aria-label="Facebook" class="fb-icon">
+      <svg viewBox="0 0 320 512" fill="currentColor" class="icon"><path d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"/></svg>
+    </a>
+    <!-- WhatsApp Icon -->
+    <a href="https://wa.me/201009805534" target="_blank" title="WhatsApp" aria-label="WhatsApp" class="wa-icon">
+      <svg viewBox="0 0 448 512" fill="currentColor" class="icon"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zM223.9 413.6c-33.1 0-65.5-8.9-94-25.7l-6.7-4-69.8 18.3L72 334l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98 0-101.9 83.1-185 185-185 54.1 0 105.1 21.1 143.4 59.4 38.3 38.3 59.4 89.3 59.4 143.4 0 102-83.1 184.9-184.9 184.9zM325.2 277.6c-5.5-2.8-32.6-16.1-37.7-17.9-5.1-1.8-8.8-2.8-12.4 2.8-3.7 5.5-14.3 17.9-17.5 21.6-3.2 3.7-6.5 4.1-12 1.4-5.5-2.8-23.3-8.6-44.4-27.5-16.4-14.7-27.5-32.9-30.7-38.4-3.2-5.5-.3-8.5 2.5-11.2 2.5-2.4 5.5-6.4 8.3-9.6 2.8-3.2 3.7-5.5 5.5-9.2 1.8-3.7.9-6.9-.5-9.6-1.4-2.8-12.4-29.9-17-40.9-4.5-10.8-9.1-9.3-12.4-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.7 6.9-5 5.5-19.3 18.8-19.3 45.9s19.8 53.2 22.5 56.9c2.8 3.7 38.8 59.3 94 83.1 13.1 5.7 23.3 9 31.3 11.5 13.2 4.2 25.2 3.6 34.7 2.2 10.6-1.6 32.6-13.3 37.2-26.2 4.6-12.9 4.6-23.9 3.2-26.2-1.4-2.4-5.1-3.7-10.6-6.5z"/></svg>
+    </a>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  const MAX_ROUNDS = 3;
+
+  const QUIRKS = [
+    // --- مستويات سهلة (🟢) - 20 سيستم ---
+    { level:"easy", label:"سهل 🟢", text:"كل ما حد يتكلم يلمس أنفه أو يهرش في جبهته بشكل عفوي." },
+    { level:"easy", label:"سهل 🟢", text:"تجنبوا النظر المباشر لعين السائل أثناء الإجابة وانظروا للأرض." },
+    { level:"easy", label:"سهل 🟢", text:"شبكوا أصابع يدكم مع بعضها طول ما أنتوا بتتكلموا." },
+    { level:"easy", label:"سهل 🟢", text:"تنهدوا تنهيدة عميقة جداً وبصوت مسموع قبل بدء أي جملة." },
+    { level:"easy", label:"سهل 🟢", text:"حركوا راسكم بالموافقة (نعم) باستمرار طول ما هو بيتكلم معاكم." },
+    { level:"easy", label:"سهل 🟢", text:"ربعوا إيديكم (كتفوا إيديكم) قبل ما تردوا على أي سؤال." },
+    { level:"easy", label:"سهل 🟢", text:"ابتسموا ابتسامة واسعة جداً وغير مبررة قبل الإجابة مباشرة." },
+    { level:"easy", label:"سهل 🟢", text:"نحنحوا (احم احم) بصوت خفيف قبل ما تنطقوا بأي كلمة." },
+    { level:"easy", label:"سهل 🟢", text:"بصوا للسقف أو لفوق ثانية واحدة كأنكم بتفكروا قبل ما تردوا." },
+    { level:"easy", label:"سهل 🟢", text:"العبوا في شعركم أو ظبطوا نظارتكم (أو ملابسكم) وأنتوا بتتكلموا." },
+    { level:"easy", label:"سهل 🟢", text:"خبطوا بصوابعكم على الترابيزة أو على رجليكم وأنتم بتسمعوا السؤال." },
+    { level:"easy", label:"سهل 🟢", text:"خلوا إيد واحدة في جيبكم أو ورا ضهركم طول الوقت." },
+    { level:"easy", label:"سهل 🟢", text:"تثاءبوا (تاوبوا) بشكل خفيف ومكتوم قبل الإجابة." },
+    { level:"easy", label:"سهل 🟢", text:"افردوا ضهركم فجأة وبشكل ملحوظ أول ما يتوجهلكم الكلام." },
+    { level:"easy", label:"سهل 🟢", text:"ارمشوا بعينيكم بشكل سريع ومتكرر لمدة ثانيتين لما تتسألوا." },
+    { level:"easy", label:"سهل 🟢", text:"ميلوا راسكم ناحية اليمين شوية وأنتوا بتسمعوا السؤال." },
+    { level:"easy", label:"سهل 🟢", text:"افركوا إيديكم في بعضها كأنكم بردانين أو بتستعدوا لشيء." },
+    { level:"easy", label:"سهل 🟢", text:"العبوا في أي إكسسوار (خاتم، ساعة، قلم) طول فترة الكلام." },
+    { level:"easy", label:"سهل 🟢", text:"خدوا نفس عميق جداً من الأنف وبصوت مسموع أثناء الإجابة." },
+    { level:"easy", label:"سهل 🟢", text:"اقعدوا على طرف الكرسي أو ميلوا بجسمكم للأمام جداً ناحية اللاعب." },
+
+    // --- مستويات متوسطة (🔵) - 20 سيستم ---
+    { level:"medium", label:"متوسط 🔵", text:"ابدأوا إجابتكم دائماً بكلمة (شوف يا صاحبي) أو (بص يا سيدي)." },
+    { level:"medium", label:"متوسط 🔵", text:"ردوا على أي سؤال بضحكة قصيرة متقطعة كأنكم تدارون سرًا." },
+    { level:"medium", label:"متوسط 🔵", text:"لازم تستخدموا كلمة (طبعاً) أو (أكيد) مرتين على الأقل في كل جملة." },
+    { level:"medium", label:"متوسط 🔵", text:"قولوا (واللهِ) في أول جملة إجابتكم دائماً وبنبرة جادة جداً." },
+    { level:"medium", label:"متوسط 🔵", text:"انهوا كل إجابة بجملة (أنت فاهمني؟) أو (أنت معايا؟)." },
+    { level:"medium", label:"متوسط 🔵", text:"ابدأوا أي إجابة بجملة (بصراحة كده...)." },
+    { level:"medium", label:"متوسط 🔵", text:"اذكروا اسم لون في نص الكلام بشكل عفوي (زي ما يكون أبيض وأسود)." },
+    { level:"medium", label:"متوسط 🔵", text:"كرروا كلمة (يعني) 3 مرات على الأقل في الإجابة الواحدة." },
+    { level:"medium", label:"متوسط 🔵", text:"ردوا بصوت واطي جداً أقرب للهمس." },
+    { level:"medium", label:"متوسط 🔵", text:"امدحوا اللاعب الأول قبل الإجابة (سؤالك ذكي جداً، تصدق سؤال في محله)." },
+    { level:"medium", label:"متوسط 🔵", text:"قولوا كلمة (المهم...) وغيروا الموضوع ثانية قبل ما ترجعوا تجاوبوا." },
+    { level:"medium", label:"متوسط 🔵", text:"دخلوا كلمات إنجليزي عشوائية في النص (Actually, Basically, So)." },
+    { level:"medium", label:"متوسط 🔵", text:"ترددوا وقولوا (آآآآ) أو (إمممم) لمدة 3 ثواني قبل الإجابة." },
+    { level:"medium", label:"متوسط 🔵", text:"تكلموا بجدية شديدة جداً ورسمية كأنكم مذيعين أخبار." },
+    { level:"medium", label:"متوسط 🔵", text:"انهوا أي إجابة بجملة (والله أعلى وأعلم)." },
+    { level:"medium", label:"متوسط 🔵", text:"اذكروا أي رقم عشوائي في الإجابة مهما كان السياق." },
+    { level:"medium", label:"متوسط 🔵", text:"استخدموا جملة (عشان نكون في الصورة بس) في نص الكلام." },
+    { level:"medium", label:"متوسط 🔵", text:"اضربوا مَثَل شعبي أو حكمة في إجابتكم (مثلاً: القرد في عين أمه غزال)." },
+    { level:"medium", label:"متوسط 🔵", text:"اتكلموا برتم سريع جداً أسرع من الطبيعي بكتير." },
+    { level:"medium", label:"متوسط 🔵", text:"ابدأوا إجابتكم بـ (لا لا ثواني بس...) كأنكم بتعترضوا." },
+
+    // --- مستويات صعبة (🔴) - 20 سيستم ---
+    { level:"hard", label:"صعب 🔴", text:"أجيبوا على السؤال بسؤال آخر معاكس دون إعطاء أي معلومة مباشرة!" },
+    { level:"hard", label:"صعب 🔴", text:"كرروا الكلمة الأخيرة من سؤال اللاعب قبل البدء في الإجابة مباشرة." },
+    { level:"hard", label:"صعب 🔴", text:"تكلموا عن أنفسكم بصيغة الغائب تماماً (مثلاً: 'هو يرى أن..' بدلاً من 'أنا')." },
+    { level:"hard", label:"صعب 🔴", text:"انهوا آخر كلمة في إجابتكم بـ (يا فندم) مهما كانت طبيعة الكلام." },
+    { level:"hard", label:"صعب 🔴", text:"اعكسوا الإجابة الحقيقية تماماً (لو نعم قولوا لا بجدية شديدة، والعكس صحيح)." },
+    { level:"hard", label:"صعب 🔴", text:"يجب أن تتكون إجابتكم من 3 كلمات فقط، لا أكثر ولا أقل." },
+    { level:"hard", label:"صعب 🔴", text:"تحدثوا باللغة العربية الفصحى التامة فقط دون أي عامية." },
+    { level:"hard", label:"صعب 🔴", text:"ممنوع تماماً استخدام أي أداة نفي (لا، مش، ما، لن، لم) في كلامكم." },
+    { level:"hard", label:"صعب 🔴", text:"غيروا نبرة صوتكم ومشاعركم في نص الجملة (ابدأوا بعصبية وانهوا بضحك)." },
+    { level:"hard", label:"صعب 🔴", text:"ردوا كأنكم حكماء في الـ 90 من عمركم بتدوا نصائح للحياة." },
+    { level:"hard", label:"صعب 🔴", text:"ألفوا حقيقة تاريخية أو دراسة علمية وهمية لدعم إجابتكم." },
+    { level:"hard", label:"صعب 🔴", text:"جاوبوا إجابة ملهاش أي علاقة بالسؤال في الأول، وبعدين اربطوها بالعافية في الآخر." },
+    { level:"hard", label:"صعب 🔴", text:"خلوا آخر كلمتين في جملتكم ليهم نفس القافية (سجع)." },
+    { level:"hard", label:"صعب 🔴", text:"اتكلموا ببطء شديد جداً مع ترك مسافة بين كل كلمة والتانية." },
+    { level:"hard", label:"صعب 🔴", text:"وافقوا اللاعب في كلامه بس اتصرفوا كأنكم مهانين ومصدومين جداً من سؤاله." },
+    { level:"hard", label:"صعب 🔴", text:"اتعاملوا مع السؤال كأنه سر خطير وأمن قومي وتلفتوا حواليكم قبل الإجابة." },
+    { level:"hard", label:"صعب 🔴", text:"اذكروا اسم حيوان في الإجابة بشكل طبيعي ومستخبي جداً وسط الكلام." },
+    { level:"hard", label:"صعب 🔴", text:"تظاهروا إنكم مسمعتوش السؤال في أول مرة دايماً، واطلبوا إعادته." },
+    { level:"hard", label:"صعب 🔴", text:"ابدأوا إجابتكم بحرف يبدأ بنفس آخر حرف من آخر كلمة قالها اللاعب." },
+    { level:"hard", label:"صعب 🔴", text:"عبروا عن حزن ومأساة مزيفة وأنتم بتجاوبوا على أي سؤال مهما كان عادي." }
+  ];
+
+  const WHEEL_COLORS = ["#1e3a8a", "#0f766e", "#3b82f6", "#10b981", "#f43f5e", "#6d28d9", "#b45309", "#374151"];
+
+  let players = [];
+  let currentGuesser = null;
+  let currentQuirk = null;
+  let isSpinning = false;
+  let wheelRotation = 0;
+  let lastWinnerIndex = -1;
+  let roundNumber = 0;
+  let soundEnabled = true;
+  let audioCtx = null;
+
+  const screens = {
+    setup: document.getElementById('screen-setup'),
+    wheel: document.getElementById('screen-wheel'),
+    transition: document.getElementById('screen-transition'),
+    reveal: document.getElementById('screen-reveal'),
+    play: document.getElementById('screen-play'),
+    roundend: document.getElementById('screen-roundend'),
+    gameover: document.getElementById('screen-gameover')
+  };
+
+  const nameInput = document.getElementById('nameInput');
+  const addBtn = document.getElementById('addBtn');
+  const playersList = document.getElementById('playersList');
+  const startBtn = document.getElementById('startBtn');
+  const canvas = document.getElementById('wheelCanvas');
+  const ctx = canvas.getContext('2d');
+  const spinBtn = document.getElementById('spinBtn');
+  const backToSetupBtn = document.getElementById('backToSetupBtn');
+  const guesserNameDisplay = document.getElementById('guesserNameDisplay');
+  const revealEasyBtn = document.getElementById('revealEasyBtn');
+  const revealMediumBtn = document.getElementById('revealMediumBtn');
+  const revealHardBtn = document.getElementById('revealHardBtn');
+  const secretCard = document.getElementById('secretCard');
+  const diffBadge = document.getElementById('diffBadge');
+  const quirkText = document.getElementById('quirkText');
+  const startPlayBtn = document.getElementById('startPlayBtn');
+  const guesserNamePlay = document.getElementById('guesserNamePlay');
+  const newRoundBtn = document.getElementById('newRoundBtn');
+  const homeBtn = document.getElementById('homeBtn');
+  const soundToggleBtn = document.getElementById('soundToggleBtn');
+  const roundChip = document.getElementById('roundChip');
+  const roundEndNumber = document.getElementById('roundEndNumber');
+  const nextRoundNumber = document.getElementById('nextRoundNumber');
+  const confirmNextRoundBtn = document.getElementById('confirmNextRoundBtn');
+  const homeFromRoundEndBtn = document.getElementById('homeFromRoundEndBtn');
+  const restartGameBtn = document.getElementById('restartGameBtn');
+
+  function ensureAudio(){
+    if(!audioCtx){
+      try{ audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+      catch(e){ audioCtx = null; }
+    }
+    return audioCtx;
+  }
+
+  function playTone(freq, duration, type){
+    if(!soundEnabled) return;
+    const ctx2 = ensureAudio();
+    if(!ctx2) return;
+    try{
+      const osc = ctx2.createOscillator();
+      const gain = ctx2.createGain();
+      osc.type = type || 'triangle';
+      osc.frequency.setValueAtTime(freq, ctx2.currentTime);
+      gain.gain.setValueAtTime(0.15, ctx2.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx2.currentTime + duration);
+      osc.connect(gain);
+      gain.connect(ctx2.destination);
+      osc.start();
+      osc.stop(ctx2.currentTime + duration);
+    }catch(e){}
+  }
+
+  function playTick(){ playTone(160, 0.03, 'triangle'); }
+  function playChime(){
+    playTone(523.25, 0.1, 'sine');
+    setTimeout(() => playTone(659.25, 0.12, 'sine'), 80);
+    setTimeout(() => playTone(783.99, 0.15, 'sine'), 160);
+  }
+
+  soundToggleBtn.addEventListener('click', () => {
+    soundEnabled = !soundEnabled;
+    soundToggleBtn.textContent = soundEnabled ? '🔊' : '🔇';
+    if(soundEnabled){ ensureAudio(); }
+  });
+
+  function showScreen(name){
+    Object.values(screens).forEach(s => s.classList.remove('active'));
+    screens[name].classList.add('active');
+  }
+
+  function renderPlayers(){
+    playersList.innerHTML = '';
+    players.forEach((name, idx) => {
+      const pill = document.createElement('div');
+      pill.className = 'player-pill';
+
+      const avatar = document.createElement('span');
+      avatar.className = 'pill-avatar';
+      avatar.style.background = WHEEL_COLORS[idx % WHEEL_COLORS.length];
+      avatar.style.color = '#fff';
+      avatar.textContent = name.trim().charAt(0).toUpperCase();
+
+      const span = document.createElement('span');
+      span.textContent = name;
+
+      const removeBtn = document.createElement('button');
+      removeBtn.className = 'pill-remove';
+      removeBtn.textContent = '×';
+      removeBtn.addEventListener('click', () => {
+        players.splice(idx, 1);
+        renderPlayers();
+      });
+
+      pill.appendChild(avatar);
+      pill.appendChild(span);
+      pill.appendChild(removeBtn);
+      playersList.appendChild(pill);
+    });
+    startBtn.disabled = players.length < 3;
+  }
+
+  function addPlayer(){
+    const raw = nameInput.value.trim();
+    if(!raw) return;
+    if(players.includes(raw)) {
+      nameInput.value = '';
+      return;
+    }
+    players.push(raw);
+    nameInput.value = '';
+    nameInput.focus();
+    renderPlayers();
+  }
+
+  addBtn.addEventListener('click', addPlayer);
+  nameInput.addEventListener('keydown', (e) => {
+    if(e.key === 'Enter') addPlayer();
+  });
+
+  startBtn.addEventListener('click', () => {
+    if(players.length >= 3) goToWheelScreen();
+  });
+
+  function drawWheel(rotation){
+    const size = canvas.width;
+    const cx = size / 2;
+    const cy = size / 2;
+    const radius = size / 2 - 8;
+    const n = players.length;
+    if(n === 0) return;
+    const sliceAngle = (Math.PI * 2) / n;
+
+    ctx.clearRect(0, 0, size, size);
+
+    for(let i = 0; i < n; i++){
+      const startAngle = rotation + i * sliceAngle;
+      const endAngle = startAngle + sliceAngle;
+
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.arc(cx, cy, radius, startAngle, endAngle);
+      ctx.closePath();
+      ctx.fillStyle = WHEEL_COLORS[i % WHEEL_COLORS.length];
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(3, 7, 18, 0.4)';
+      ctx.lineWidth = 4;
+      ctx.stroke();
+
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(startAngle + sliceAngle / 2);
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = '#ffffff';
+      ctx.font = "800 24px 'Tajawal', sans-serif";
+
+      let label = players[i];
+      if(label.length > 10) label = label.slice(0, 9) + '…';
+      ctx.fillText(label, radius - 25, 0);
+      ctx.restore();
+    }
+  }
+
+  function goToWheelScreen(){
+    wheelRotation = 0;
+    showScreen('wheel');
+    setTimeout(() => drawWheel(0), 100);
+  }
+
+  backToSetupBtn.addEventListener('click', () => {
+    showScreen('setup');
+  });
+
+  function spinWheel(){
+    if(isSpinning || players.length === 0) return;
+    isSpinning = true;
+    spinBtn.disabled = true;
+
+    const n = players.length;
+    const sliceAngle = (Math.PI * 2) / n;
+    let winnerIndex = Math.floor(Math.random() * n);
+
+    if(n > 1 && lastWinnerIndex !== -1){
+      while(winnerIndex === lastWinnerIndex){
+        winnerIndex = Math.floor(Math.random() * n);
+      }
+    }
+
+    const pointerAngle = -Math.PI / 2;
+    const targetSliceCenter = winnerIndex * sliceAngle + sliceAngle / 2;
+
+    let finalMod = pointerAngle - targetSliceCenter;
+    finalMod = ((finalMod % (Math.PI * 2)) + (Math.PI * 2)) % (Math.PI * 2);
+
+    const extraSpins = 6;
+    const startRotation = wheelRotation;
+    const totalRotation = startRotation + extraSpins * Math.PI * 2 + (finalMod - (startRotation % (Math.PI*2)) + Math.PI*2) % (Math.PI*2);
+
+    const duration = 4000;
+    const startTime = performance.now();
+    let lastTickSlice = Math.floor((startRotation % (Math.PI * 2)) / sliceAngle);
+
+    function animate(now){
+      const elapsed = now - startTime;
+      const t = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - t, 4);
+      const currentRotation = startRotation + (totalRotation - startRotation) * eased;
+      wheelRotation = currentRotation;
+      drawWheel(wheelRotation);
+
+      const currentSlice = Math.floor((currentRotation % (Math.PI * 2)) / sliceAngle);
+      if(currentSlice !== lastTickSlice){
+        playTick();
+        lastTickSlice = currentSlice;
+      }
+
+      if(t < 1){
+        requestAnimationFrame(animate);
+      }else{
+        isSpinning = false;
+        spinBtn.disabled = false;
+        lastWinnerIndex = winnerIndex;
+        currentGuesser = players[winnerIndex];
+
+        playChime();
+        guesserNameDisplay.textContent = currentGuesser;
+
+        setTimeout(() => {
+          showScreen('transition');
+        }, 1000);
+      }
+    }
+    requestAnimationFrame(animate);
+  }
+
+  spinBtn.addEventListener('click', spinWheel);
+
+  function pickQuirk(level){
+    const pool = QUIRKS.filter(q => q.level === level);
+    currentQuirk = pool[Math.floor(Math.random() * pool.length)];
+
+    secretCard.className = "secret-card";
+    diffBadge.className = "level-badge";
+
+    if (level === 'easy') {
+      secretCard.classList.add('easy-card');
+      diffBadge.classList.add('badge-easy');
+      diffBadge.textContent = "سهل 🟢";
+    } else if (level === 'medium') {
+      secretCard.classList.add('medium-card');
+      diffBadge.classList.add('badge-medium');
+      diffBadge.textContent = "متوسط 🔵";
+    } else {
+      secretCard.classList.add('hard-card');
+      diffBadge.classList.add('badge-hard');
+      diffBadge.textContent = "صعب 🔴";
+    }
+
+    quirkText.textContent = currentQuirk.text;
+    showScreen('reveal');
+  }
+
+  revealEasyBtn.addEventListener('click', () => pickQuirk('easy'));
+  revealMediumBtn.addEventListener('click', () => pickQuirk('medium'));
+  revealHardBtn.addEventListener('click', () => pickQuirk('hard'));
+
+  startPlayBtn.addEventListener('click', () => {
+    guesserNamePlay.textContent = currentGuesser;
+    roundNumber++;
+    roundChip.textContent = `الجولة ${roundNumber} / ${MAX_ROUNDS}`;
+    roundChip.style.display = 'block';
+    showScreen('play');
+  });
+
+  newRoundBtn.addEventListener('click', () => {
+    if(roundNumber >= MAX_ROUNDS){
+      showScreen('gameover');
+    }else{
+      roundEndNumber.textContent = roundNumber;
+      nextRoundNumber.textContent = roundNumber + 1;
+      showScreen('roundend');
+    }
+  });
+
+  confirmNextRoundBtn.addEventListener('click', () => {
+    goToWheelScreen();
+  });
+
+  function resetGame(){
+    players = [];
+    currentGuesser = null;
+    currentQuirk = null;
+    lastWinnerIndex = -1;
+    roundNumber = 0;
+    roundChip.style.display = 'none';
+    renderPlayers();
+    showScreen('setup');
+  }
+
+  homeBtn.addEventListener('click', resetGame);
+  homeFromRoundEndBtn.addEventListener('click', resetGame);
+  restartGameBtn.addEventListener('click', resetGame);
+
+  renderPlayers();
+})();
+</script>
+</body>
+</html>
